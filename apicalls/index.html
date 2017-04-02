@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<body>
+
+		<h1>Using Javascript API Call to Get Zootopia Film Details</h1>
+
+		<form name="movies" onSubmit="return getMovies()">
+			Enter Movie Name: <input type="text" id="movieName">
+			<input name="Submit" type="submit" />
+	    </form>
+
+		
+		<button onclick="getMovies()">Get Movie Details</button>
+
+		<div id="movieDetails">
+			<h2 id="title"></h2>
+			<p id="details"></p>
+		</div>
+
+		<script>
+		function handleClick() {
+			console.log("whoop");
+			return false;
+		}
+
+		function getMovies() {
+			// get movie name from the input field
+			movieName = document.getElementById("movieName").value
+			// making the api call
+			var xhttp = new XMLHttpRequest();
+			var api_key = "<GET_API_KEY>"; 	// you'll need to get your own API key from: https://www.themoviedb.org/documentation/api
+			var url = "https://api.themoviedb.org/3/search/movie?api_key=" + api_key + "&language=en-US&query=" + movieName + "";
+			xhttp.open("GET", url, true);
+			xhttp.send();
+
+			// analyzing the results
+			xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					var responseJson = JSON.parse(this.response);
+					document.getElementById("title").innerHTML = responseJson.results[0].title;
+					document.getElementById("details").innerHTML = responseJson.results[0].overview;
+				}
+			};
+			return false;
+
+		}
+		</script>
+		 
+	</body>
+</html>
